@@ -1,0 +1,24 @@
+name: Build (no hardware)
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-26]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: brew install meson ninja pkg-config libusb
+      - name: Build and inspect
+        run: |
+          ./scripts/build.sh
+          file dist/ifd-ccid-cns-test.bundle/Contents/MacOS/libccid.dylib
+          python3 tests/check_bundle.py dist/ifd-ccid-cns-test.bundle
+          bash -n scripts/*.sh
