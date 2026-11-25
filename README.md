@@ -6,7 +6,7 @@ A documented, reproducible workaround for a smart-card reader that could read a 
 
 ## In breve (italiano)
 
-Se un lettore Alcor AU9540 vede la CNS ma l’accesso resta bloccato dopo la scelta del certificato, questo progetto permette di compilare e provare un driver CCID aggiornato. Il caso è stato risolto su **un Mac Apple Silicon con macOS 26.6.2**, con Firefox e Safari. L’utente riferisce inoltre che su un secondo Mac con **macOS 27** il driver consente sia la firma sia l’accesso ai siti istituzionali; ulteriori combinazioni restano da verificare. La correzione del driver è del progetto originale CCID: qui documentiamo l’indagine e rendiamo ripetibile la configurazione.
+Se un lettore Alcor AU9540 vede la CNS ma l’accesso resta bloccato dopo la scelta del certificato, questo progetto permette di compilare e provare un driver CCID aggiornato. Il caso è stato risolto su **un Mac Apple Silicon con macOS 26.6.2**, con Firefox e Safari. L’utente riferisce inoltre che su un secondo Mac con **macOS 27** il driver consente sia la firma sia l’accesso ai siti istituzionali; gli script pubblicati e ulteriori combinazioni restano da verificare con l’hardware. La correzione del driver è del progetto originale CCID: qui documentiamo l’indagine e rendiamo ripetibile la configurazione.
 
 L’installazione richiede Terminale, strumenti di sviluppo, Homebrew e una password amministratore. Cambia una preferenza valida per tutti i lettori di smart card del Mac; lo script di rimozione ripristina il valore precedente. Il driver è compilato localmente e non è notarizzato da Apple. Leggi le istruzioni e prova prima su un Mac non di produzione.
 
@@ -20,7 +20,7 @@ L’installazione richiede Terminale, strumenti di sviluppo, Homebrew e una pass
 | Intel Macs | Not supported by this build script. |
 | Other reader IDs or card models | Not tested; the generated driver is restricted to 058f:9540. |
 
-Apple's commercial releases include macOS 14, 15, 26 and 27. Darwin 24 and 25 are kernel version numbers, not macOS 24 and 25. A successful build in CI does not test a reader or establish authentication compatibility.
+Apple's commercial releases include macOS 14, 15, 26 and 27. Darwin 24 and 25 are kernel version numbers, not macOS 24 and 25. A successful build in CI does not test a reader or establish authentication compatibility. The newly published build/install scripts have not yet been tested end-to-end with hardware; the original locally built CCID 1.8.4 driver was used for the successful authentication.
 
 ## What this changes
 
