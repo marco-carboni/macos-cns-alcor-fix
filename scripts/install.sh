@@ -17,7 +17,7 @@ assert d['ifdVendorID']==['0x058F'] and d['ifdProductID']==['0x9540'], 'Unexpect
 PY
 file "$SRC/Contents/MacOS/libccid.dylib" | grep -q arm64 || { echo 'Driver is not arm64.' >&2; exit 1; }
 echo 'This installs a locally built, non-notarized driver and changes useIFDCCID for all smart-card readers.'
-echo 'macOS 14, 15 and 27 have not been tested with hardware. macOS 26.6.2 has one successful test.'
+echo 'macOS 26.6.2 was tested; macOS 27 success was user reported. macOS 14 and 15 have no hardware tests yet.'
 read -r -p 'Continue? Type YES: ' answer
 [[ "$answer" == YES ]] || { echo 'Cancelled.'; exit 1; }
 sudo -v

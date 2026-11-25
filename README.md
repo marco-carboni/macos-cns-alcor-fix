@@ -2,11 +2,11 @@
 
 A documented, reproducible workaround for a smart-card reader that could read a CNS certificate but could not complete authentication. On one Apple Silicon Mac, installing a newer CCID driver resolved an Agenzia delle Entrate login that hung after certificate selection. Safari and Firefox both reached the authenticated area afterwards.
 
-**Status: one successful hardware case, not a universal fix.** This repository packages an existing upstream correction; it does not claim to have discovered or authored the CCID fix. The original [Alcor AU9540 issue](https://github.com/LudovicRousseau/CCID/issues/84) and the [CCID project by Ludovic Rousseau](https://github.com/LudovicRousseau/CCID) deserve credit. The user's card and the cards in the original issue are different, so the exact mechanism in this case has not been proven.
+**Status: two reported successful hardware cases, not a universal fix.** This repository packages an existing upstream correction; it does not claim to have discovered or authored the CCID fix. The original [Alcor AU9540 issue](https://github.com/LudovicRousseau/CCID/issues/84) and the [CCID project by Ludovic Rousseau](https://github.com/LudovicRousseau/CCID) deserve credit. The user's card and the cards in the original issue are different, so the exact mechanism in this case has not been proven.
 
 ## In breve (italiano)
 
-Se un lettore Alcor AU9540 vede la CNS ma l’accesso resta bloccato dopo la scelta del certificato, questo progetto permette di compilare e provare un driver CCID aggiornato. Il caso è stato risolto su **un Mac Apple Silicon con macOS 26.6.2**, con Firefox e Safari; le altre combinazioni sono ancora da verificare. La correzione del driver è del progetto originale CCID: qui documentiamo l’indagine e rendiamo ripetibile la configurazione.
+Se un lettore Alcor AU9540 vede la CNS ma l’accesso resta bloccato dopo la scelta del certificato, questo progetto permette di compilare e provare un driver CCID aggiornato. Il caso è stato risolto su **un Mac Apple Silicon con macOS 26.6.2**, con Firefox e Safari. L’utente riferisce inoltre che su un secondo Mac con **macOS 27** il driver consente sia la firma sia l’accesso ai siti istituzionali; ulteriori combinazioni restano da verificare. La correzione del driver è del progetto originale CCID: qui documentiamo l’indagine e rendiamo ripetibile la configurazione.
 
 L’installazione richiede Terminale, strumenti di sviluppo, Homebrew e una password amministratore. Cambia una preferenza valida per tutti i lettori di smart card del Mac; lo script di rimozione ripristina il valore precedente. Il driver è compilato localmente e non è notarizzato da Apple. Leggi le istruzioni e prova prima su un Mac non di produzione.
 
@@ -15,7 +15,8 @@ L’installazione richiede Terminale, strumenti di sviluppo, Homebrew e una pass
 | Environment | Status |
 |---|---|
 | Apple Silicon, macOS 26.6.2, AU9540 (058f:9540), InfoCamere CNS | **Hardware tested:** Firefox and Safari login succeeded on one Mac. |
-| Apple Silicon, macOS 14 / 15 / 27 | Build/install targets; **hardware and authentication not yet verified**. |
+| macOS 27, second Mac | **User reported:** driver installed; CNS login to institutional sites and digital signing succeeded. Hardware model and exact OS version not yet recorded. |
+| Apple Silicon, macOS 14 / 15 | Build/install targets; **hardware and authentication not yet verified**. |
 | Intel Macs | Not supported by this build script. |
 | Other reader IDs or card models | Not tested; the generated driver is restricted to 058f:9540. |
 
@@ -56,7 +57,7 @@ This removes this repository's driver and restores the saved `useIFDCCID` prefer
 
 ## Verification and contributing
 
-The GitHub Actions workflow builds on macOS 15 and 26 Apple Silicon hosted runners and checks the driver manifest; it does not access a card reader. Hardware reports for supported macOS releases, card models and reader firmware are welcome. Please redact personal data from logs and screenshots. For use with a government portal, do not upload your certificate or PIN to an issue.
+The GitHub Actions workflow builds on macOS 15 and 26 Apple Silicon hosted runners and checks the driver manifest; it does not access a card reader. Additional hardware reports for supported macOS releases, card models and reader firmware are welcome. Please redact personal data from logs and screenshots. For use with a government portal, do not upload your certificate or PIN to an issue.
 
 ## Credits and licensing
 
