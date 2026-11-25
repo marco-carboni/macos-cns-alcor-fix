@@ -4,11 +4,9 @@ A documented, reproducible workaround for a smart-card reader that could read a 
 
 **Status: two reported successful hardware cases, not a universal fix.** This repository packages an existing upstream correction; it does not claim to have discovered or authored the CCID fix. The original [Alcor AU9540 issue](https://github.com/LudovicRousseau/CCID/issues/84) and the [CCID project by Ludovic Rousseau](https://github.com/LudovicRousseau/CCID) deserve credit. The user's card and the cards in the original issue are different, so the exact mechanism in this case has not been proven.
 
-## In breve (italiano)
+## Why this repository exists
 
-Se un lettore Alcor AU9540 vede la CNS ma l’accesso resta bloccato dopo la scelta del certificato, questo progetto permette di compilare e provare un driver CCID aggiornato. Il caso è stato risolto su **un Mac Apple Silicon con macOS 26.6.2**, con Firefox e Safari. L’utente riferisce inoltre che su un secondo Mac con **macOS 27** il driver consente sia la firma sia l’accesso ai siti istituzionali; gli script pubblicati e ulteriori combinazioni restano da verificare con l’hardware. La correzione del driver è del progetto originale CCID: qui documentiamo l’indagine e rendiamo ripetibile la configurazione.
-
-L’installazione richiede Terminale, strumenti di sviluppo, Homebrew e una password amministratore. Cambia una preferenza valida per tutti i lettori di smart card del Mac; lo script di rimozione ripristina il valore precedente. Il driver è compilato localmente e non è notarizzato da Apple. Leggi le istruzioni e prova prima su un Mac non di produzione.
+During the investigation, we tried two physically different readers from different brands. Both appeared to use the Alcor AU9540 chip (USB ID `058f:9540`), and both reproduced the problem. Reader branding does not necessarily identify the chipset, so this finding may help others recognize the same hardware under a different name. It does not establish how widespread the issue is or prove that every AU9540 reader is affected.
 
 ## Tested and intended support
 
@@ -30,17 +28,15 @@ Apple's commercial releases include macOS 14, 15, 26 and 27. Darwin 24 and 25 ar
 - Does **not** install the card middleware or import certificates. A working vendor middleware and active CNS certificate may still be required.
 - The driver is compiled locally and is **not notarized by Apple**. Use only on machines you administer, review the scripts, and test outside production first.
 
-## Middleware della CNS / Card middleware
+## CNS card middleware
 
-Il driver CCID qui compilato gestisce il **lettore**. La smart card richiede anche il middleware appropriato al proprio emittente; non tutte le CNS usano lo stesso software.
+The CCID driver built here controls the **reader**. The card also needs middleware appropriate to its issuer; not all CNS cards use the same software.
 
-- **InfoCamere:** [pagina ufficiale InfoCamere Sign Desktop, download ARM e requisiti](https://id.infocamere.it/documentazione/it/software_di_firma.html). La pagina del produttore elenca macOS 14, 15 e 26; non elenca macOS 27 tra i sistemi supportati. Il test riferito su macOS 27 non costituisce supporto ufficiale.
-- **Bit4id Universal Middleware:** [pagina ufficiale e manuale per macOS](https://cdn.bit4id.com/es/middleware/MacOs/MacOS.html) (in spagnolo); [download ufficiale del pacchetto](https://cdn.bit4id.com/es/soporte/downloads/middleware/Bit4id_Middleware.dmg). Nel caso documentato sul Mac con macOS 26.6.2 era installata la versione 1.4.11.877. Verifica con l’emittente che il pacchetto sia adatto alla tua carta prima di installarlo; le versioni offerte possono cambiare.
-- **Altre CNS:** usa i driver indicati dall’emittente della carta, ad esempio la Regione o il fornitore del dispositivo. Non installare automaticamente driver per un modello diverso.
+- **InfoCamere:** [official InfoCamere Sign Desktop downloads, including Apple Silicon, and system requirements](https://id.infocamere.it/documentazione/it/software_di_firma.html). The vendor lists macOS 14, 15 and 26; it does not list macOS 27 as supported. Our reported macOS 27 test is not an official support guarantee.
+- **Bit4id Universal Middleware:** [official macOS documentation](https://cdn.bit4id.com/es/middleware/MacOs/MacOS.html) (in Spanish) and [official package download](https://cdn.bit4id.com/es/soporte/downloads/middleware/Bit4id_Middleware.dmg). Version 1.4.11.877 was installed on the documented macOS 26.6.2 Mac. Check with your card issuer that the package is appropriate before installing it; available versions can change.
+- **Other CNS cards:** obtain the correct middleware from the card issuer, such as your regional authority or device provider. Do not assume another card uses the same driver.
 
-In Firefox, se il certificato non compare dopo l’installazione, la [guida InfoCamere](https://supporto.infocamere.it/aswsWeb/getOnlyFaq?idFaq=110349023&idProduct=SUAP&previousPage=home&userRole=suapud) descrive il caricamento del modulo PKCS#11; nel caso documentato è stato usato `/Library/bit4id/pkcs11/libbit4xpki.dylib`. Safari usa l’integrazione di macOS quando il middleware la fornisce. Non importare chiavi private né modificare manualmente l’attendibilità dei certificati come tentativo generico.
-
-The reader driver in this repository is separate from the card middleware. Use the official vendor links above for InfoCamere or Bit4id devices, and follow the card issuer’s guidance for other CNS cards. The InfoCamere requirements page lists macOS 14, 15 and 26; the reported macOS 27 success is not an official compatibility guarantee.
+If Firefox does not show the certificate after middleware installation, the [InfoCamere guide](https://supporto.infocamere.it/aswsWeb/getOnlyFaq?idFaq=110349023&idProduct=SUAP&previousPage=home&userRole=suapud) describes loading the PKCS#11 module. In the documented case, the module path was `/Library/bit4id/pkcs11/libbit4xpki.dylib`. Safari uses macOS integration when provided by the middleware. Do not import private keys or change certificate trust settings as a generic workaround.
 
 ## Install
 
