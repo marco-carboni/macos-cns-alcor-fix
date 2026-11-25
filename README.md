@@ -30,6 +30,18 @@ Apple's commercial releases include macOS 14, 15, 26 and 27. Darwin 24 and 25 ar
 - Does **not** install the card middleware or import certificates. A working vendor middleware and active CNS certificate may still be required.
 - The driver is compiled locally and is **not notarized by Apple**. Use only on machines you administer, review the scripts, and test outside production first.
 
+## Middleware della CNS / Card middleware
+
+Il driver CCID qui compilato gestisce il **lettore**. La smart card richiede anche il middleware appropriato al proprio emittente; non tutte le CNS usano lo stesso software.
+
+- **InfoCamere:** [pagina ufficiale InfoCamere Sign Desktop, download ARM e requisiti](https://id.infocamere.it/documentazione/it/software_di_firma.html). La pagina del produttore elenca macOS 14, 15 e 26; non elenca macOS 27 tra i sistemi supportati. Il test riferito su macOS 27 non costituisce supporto ufficiale.
+- **Bit4id Universal Middleware:** [pagina ufficiale e manuale per macOS](https://cdn.bit4id.com/es/middleware/MacOs/MacOS.html) (in spagnolo); [download ufficiale del pacchetto](https://cdn.bit4id.com/es/soporte/downloads/middleware/Bit4id_Middleware.dmg). Nel caso documentato sul Mac con macOS 26.6.2 era installata la versione 1.4.11.877. Verifica con l’emittente che il pacchetto sia adatto alla tua carta prima di installarlo; le versioni offerte possono cambiare.
+- **Altre CNS:** usa i driver indicati dall’emittente della carta, ad esempio la Regione o il fornitore del dispositivo. Non installare automaticamente driver per un modello diverso.
+
+In Firefox, se il certificato non compare dopo l’installazione, la [guida InfoCamere](https://supporto.infocamere.it/aswsWeb/getOnlyFaq?idFaq=110349023&idProduct=SUAP&previousPage=home&userRole=suapud) descrive il caricamento del modulo PKCS#11; nel caso documentato è stato usato `/Library/bit4id/pkcs11/libbit4xpki.dylib`. Safari usa l’integrazione di macOS quando il middleware la fornisce. Non importare chiavi private né modificare manualmente l’attendibilità dei certificati come tentativo generico.
+
+The reader driver in this repository is separate from the card middleware. Use the official vendor links above for InfoCamere or Bit4id devices, and follow the card issuer’s guidance for other CNS cards. The InfoCamere requirements page lists macOS 14, 15 and 26; the reported macOS 27 success is not an official compatibility guarantee.
+
 ## Install
 
 On Apple Silicon macOS 14, 15, 26 or 27, install Apple's command-line developer tools and Homebrew, then install build dependencies:
